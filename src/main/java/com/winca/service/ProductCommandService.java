@@ -3,7 +3,6 @@ package com.winca.service;
 import com.winca.dto.ProductEvent;
 import com.winca.entity.Product;
 import com.winca.repository.ProductRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -49,5 +48,7 @@ public class ProductCommandService {
     public void deleteProduct(long id){
         Product deletingProduct = productRepository.findById(id).get();
         productRepository.delete(deletingProduct);
+        ProductEvent event = new ProductEvent("DeleteProduct", deletingProduct);
+        kafkaTemplate.send("product-event-topic", event);
     }
 }

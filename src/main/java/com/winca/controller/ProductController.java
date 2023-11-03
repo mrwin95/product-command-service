@@ -31,4 +31,11 @@ public class ProductController {
         Product updatedProduct = productCommandService.updateProduct(id, product);
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable long id){
+        log.info("delete product id", id);
+        productCommandService.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
